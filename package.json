@@ -1,0 +1,10 @@
+{
+  "name": "modulo01",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Guilherme Cardoso <guilhermecardoso.info@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
