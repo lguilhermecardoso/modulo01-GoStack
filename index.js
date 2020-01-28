@@ -19,17 +19,24 @@ server.use((req, res, next) => {
 
 });
 
-server.get('/users', (req, res) => {
-  return res.json(users);
-})
 // Middleware Local
-function checkUsersExists(req, res, next) {
+  function checkUsersExists(req, res, next) {
   if (!req.body.name) {
     return res.status(400).json({error: 'User name is required'})
   }
 
   return next();
 }
+function checkUsersInArray(req, res, next) {
+  if(!users[req.params.index]) {
+    return res.status(400).json({error: 'User does not exists'});
+  }
+}
+
+
+server.get('/users', (req, res) => {
+  return res.json(users);
+})
 
 server.post('/users', checkUsersExists, (req, res) => {
   
@@ -41,7 +48,7 @@ server.post('/users', checkUsersExists, (req, res) => {
   
 })
 
-server.delete('/users/:index', (req, res) => {
+server.delete('/users/:index', checkUsersInArray, (req, res) => {
 
   const { index } = req.params;
 
@@ -51,7 +58,7 @@ server.delete('/users/:index', (req, res) => {
   
 })
 
-server.put('/users/:index', checkUsersExists, (req, res) => {
+server.put('/users/:index', checkUsersExists, checkUsersInArray, (req, res) => {
 
   const { index } = req.params;
 
@@ -63,7 +70,7 @@ server.put('/users/:index', checkUsersExists, (req, res) => {
 
 });
 
-server.get('/users/:index',  (req, res) => {
+server.get('/users/:index', checkUsersInArray,  (req, res) => {
 
   const { index } = req.params;
 
